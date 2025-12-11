@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RNI - Registro Nacional de Infieles del Perú</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ========== ENCABEZADO ========== -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-heart-broken"></i>
+                <div>
+                    <h1>🔴 RNI - Registro Nacional de Infieles</h1>
+                    <p>📍 Lima, Perú - Base de datos de infidelidades</p>
+                </div>
+            </div>
+            <!-- Banner pequeño en el header -->
+            <div style="
+                background: rgba(255, 255, 0, 0.2);
+                border-left: 3px solid #ffff00;
+                padding: 0.8rem;
+                border-radius: 8px;
+                font-size: 0.85rem;
+                text-align: right;
+                color: #ffff00;
+                font-weight: bold;
+            ">
+                ⚡ Ofertas Especiales Activas<br>
+                Haz clic en cualquier anuncio
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== BANNER PUBLICIDAD ========== -->
+    <div class="banner-principal">
+        💔 ¡Descubre a los infieles de tu zona! Búsqueda rápida por distrito de Lima | 
+        <span style="color: #ffff00; font-weight: bold;">PROMOOCIÓN: Investigador Privado -30%</span>
+    </div>
+
+    <!-- ========== CONTENEDOR PRINCIPAL ========== -->
+    <div class="container">
+        
+        <!-- ========== ALERTAS ========== -->
+        <div id="alertas" class="alertas-container"></div>
+
+        <!-- ========== SECCIÓN PRINCIPAL ========== -->
+        <section class="main-section">
+            
+            <div class="section-header">
+                <h2 class="section-title">📋 Lista de Infieles (<span id="total-registros">0</span>)</h2>
+                <button class="btn btn-primary" onclick="abrirModalAgregar()">
+                    ➕ Agregar Infiel
+                </button>
+            </div>
+
+            <!-- ========== FILTROS ========== -->
+            <div class="filters">
+                <h3 class="filters-title">🔍 Filtros de Búsqueda</h3>
+                <div class="filters-grid">
+                    
+                    <div class="form-group">
+                        <label>Nombre/Apellido</label>
+                        <input type="text" id="filtroNombre" placeholder="Buscar..." onkeyup="aplicarFiltros()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Género</label>
+                        <select id="filtroGenero" onchange="aplicarFiltros()">
+                            <option value="">Todos</option>
+                            <option value="M">👨 Masculino</option>
+                            <option value="F">👩 Femenino</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Distrito</label>
+                        <select id="filtroDistrito" onchange="aplicarFiltros()"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ordenar por</label>
+                        <select id="filtroOrden" onchange="aplicarFiltros()">
+                            <option value="reciente">Más Reciente</option>
+                            <option value="antiguo">Más Antiguo</option>
+                            <option value="edad">Mayor Edad</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== TABLA ========== -->
+            <div class="table-container">
+                <table id="tablaPersonas">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th>Nombre Completo</th>
+                            <th>Género</th>
+                            <th>Edad</th>
+                            <th>Ocupación</th>
+                            <th>📍 Distrito</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 2rem;">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                    <p>Cargando datos...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mensaje sin datos -->
+            <div id="sinDatos" class="sin-datos" style="display: none;">
+                <div style="font-size: 3rem; opacity: 0.5; margin-bottom: 1rem;">🔍</div>
+                <p>No hay infieles con esos criterios</p>
+            </div>
+
+        </section>
+
+        <!-- ========== BANNER INTERMEDIO ========== -->
+        <div style="
+            background: linear-gradient(135deg, #ff4d94, #9d4edd);
+            padding: 2rem;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 40px rgba(255,77,148,0.5);
+        ">
+            <h2 style="margin: 0 0 1rem 0; font-size: 1.8rem;">⚠️ ALERTA: Función de Notificaciones Premium</h2>
+            <p style="margin: 0.5rem 0; font-size: 1.1rem;">Recibe alertas en tiempo real cuando alguien en tu zona es registrado</p>
+            <button style="
+                background: white;
+                color: #ff4d94;
+                border: none;
+                padding: 0.8rem 2rem;
+                border-radius: 50px;
+                font-weight: bold;
+                cursor: pointer;
+                font-size: 1rem;
+                margin-top: 1rem;
+            ">Activar Notificaciones - S/ 9.99/mes</button>
+        </div>
+
+        <!-- ========== PUBLICIDAD LATERAL ========== -->
+        <div class="ads-container">
+            
+            <div class="ad-card ad-travel">
+                <div class="ad-icon">✈️</div>
+                <h3>¡Viajes de Escapada!</h3>
+                <p>Huye a Machu Picchu, Cusco o Arequipa</p>
+                <p class="ad-price">Desde S/ 299</p>
+            </div>
+
+            <div class="ad-card ad-detective">
+                <div class="ad-icon">🔍</div>
+                <h3>Investigador Privado</h3>
+                <p>Comprueba la infidelidad</p>
+                <p class="ad-price">Desde S/ 450</p>
+            </div>
+
+            <div class="ad-card ad-therapy">
+                <div class="ad-icon">💔</div>
+                <h3>Terapia de Pareja</h3>
+                <p>Recupera tu relación</p>
+                <p class="ad-price">Primera sesión GRATIS</p>
+            </div>
+
+            <div class="ad-card ad-dating">
+                <div class="ad-icon">💕</div>
+                <h3>App de Citas</h3>
+                <p>Conoce personas nuevas discretamente</p>
+                <p class="ad-price">Premium desde S/ 29/mes</p>
+            </div>
+
+            <div class="ad-card ad-hotel">
+                <div class="ad-icon">🏨</div>
+                <h3>Hoteles Románticos</h3>
+                <p>Suites discretas por horas</p>
+                <p class="ad-price">Desde S/ 150</p>
+            </div>
+
+            <div class="ad-card ad-lawyer">
+                <div class="ad-icon">⚖️</div>
+                <h3>Abogado Matrimonial</h3>
+                <p>Asesoria legal en divorcios</p>
+                <p class="ad-price">Primera consulta GRATIS</p>
+            </div>
+
+            <div class="ad-card ad-gym">
+                <div class="ad-icon">💪</div>
+                <h3>Gym Premium</h3>
+                <p>Ponete en forma discretamente</p>
+                <p class="ad-price">Desde S/ 99/mes</p>
+            </div>
+
+            <div class="ad-card ad-salon">
+                <div class="ad-icon">💇</div>
+                <h3>Salón de Belleza</h3>
+                <p>Renueva tu look antes de salir</p>
+                <p class="ad-price">Promoción: 20% descuento</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========== MODAL: AGREGAR/EDITAR ========== -->
+    <div id="modalPersona" class="modal">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitulo">➕ Registrar Nuevo Infiel</h2>
+                <button class="close-btn" onclick="cerrarModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="formPersona" onsubmit="guardarPersona(event)">
+                
+                <input type="hidden" id="personaId">
+
+                <div class="modal-body">
+                    
+                    <div class="form-group">
+                        <label>Nombres <span class="requerido">*</span></label>
+                        <input type="text" id="nombre" required placeholder="Ej: Juan">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Apellidos <span class="requerido">*</span></label>
+                        <input type="text" id="apellido" required placeholder="Ej: García López">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Edad <span class="requerido">*</span></label>
+                        <input type="number" id="edad" min="18" max="99" required placeholder="Ej: 28">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Género <span class="requerido">*</span></label>
+                        <select id="genero" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="M">👨 Masculino</option>
+                            <option value="F">👩 Femenino</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ocupación <span class="requerido">*</span></label>
+                        <select id="ocupacion" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="Trabaja">Trabaja</option>
+                            <option value="Estudia">Estudia</option>
+                            <option value="Trabaja y estudia">Trabaja y estudia</option>
+                            <option value="Independiente">Independiente</option>
+                            <option value="Desempleado">Desempleado</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Distrito <span class="requerido">*</span></label>
+                        <select id="distritoModal" required></select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="cerrarModal()">
+                        ✕ Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        💾 Guardar
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
