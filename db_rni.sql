@@ -1,8 +1,8 @@
 -- ================================================================
--- BASE DE DATOS RNI - REGISTRO NACIONAL DE INFIELES
+-- BASE DE DATOS RNI - REGISTRO NACIONAL DE INFIELES (Datos ficticios)
 -- ================================================================
--- Este script crea la base de datos y la tabla de personas
--- con 100 registros de ejemplo
+-- Se crea la base de datos y la tabla de personas
+-- con 88 registros de ejemplo
 
 -- ================================================================
 -- 1. CREAR BASE DE DATOS
@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS personas (
 );
 
 -- ================================================================
--- 3. INSERTAR 100 REGISTROS DE PRUEBA
--- ================================================================
+-- 3. INSERTAR REGISTROS DE PRUEBA (Datos ficticios)
+ -- ================================================================
 INSERT INTO personas (nombre, apellido, edad, genero, ocupacion, distrito) VALUES
 ('Juan', 'García López', 28, 'M', 'Trabaja', 'Los Olivos'),
 ('María', 'Rodríguez Pérez', 25, 'F', 'Estudia', 'Miraflores'),
@@ -131,6 +131,7 @@ SELECT * FROM personas LIMIT 10;
 -- ================================================================
 -- 5. ESTADÍSTICAS INICIALES
 -- ================================================================
+--Para hcaer consultas o generar un dashboard 
 SELECT 
     genero,
     COUNT(*) as cantidad,
