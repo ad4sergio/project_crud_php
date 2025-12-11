@@ -4,4 +4,6 @@ No utiliza datos reales.
 
 Se usó PHP, JavaScript, CSS , HTML. Y la base de datos para MySql. 
 
+Se usó Claude como asistente de IA.
+
 
